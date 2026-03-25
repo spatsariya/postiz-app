@@ -15,8 +15,6 @@ import { PHProvider } from '@gitroom/react/helpers/posthog';
 import UtmSaver from '@gitroom/helpers/utils/utm.saver';
 import { DubAnalytics } from '@gitroom/frontend/components/layout/dubAnalytics';
 import { FacebookComponent } from '@gitroom/frontend/components/layout/facebook.component';
-import { headers } from 'next/headers';
-import { headerName } from '@gitroom/react/translation/i18n.config';
 import { HtmlComponent } from '@gitroom/frontend/components/layout/html.component';
 import Script from 'next/script';
 // import dynamicLoad from 'next/dynamic';
@@ -34,7 +32,6 @@ const jakartaSans = Plus_Jakarta_Sans({
 });
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
-  const allHeaders = await headers();
   const Plausible = !!process.env.STRIPE_PUBLISHABLE_KEY
     ? PlausibleProvider
     : Fragment;
@@ -80,7 +77,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
           disableXAnalytics={!!process.env.DISABLE_X_ANALYTICS}
           sentryDsn={process.env.NEXT_PUBLIC_SENTRY_DSN!}
           extensionId={process.env.EXTENSION_ID || ''}
-          language={allHeaders.get(headerName)}
+          language="en"
           transloadit={
             process.env.TRANSLOADIT_AUTH && process.env.TRANSLOADIT_TEMPLATE
               ? [
