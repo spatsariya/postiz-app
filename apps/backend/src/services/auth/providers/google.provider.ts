@@ -5,7 +5,7 @@ import {
 } from '@gitroom/backend/services/auth/providers.interface';
 
 const defaultRedirect = () =>
-  `${process.env.FRONTEND_URL}/integrations/social/youtube`;
+  `${process.env.FRONTEND_URL}/settings?provider=google`;
 
 const makeClient = (redirectUri: string) =>
   new google.auth.OAuth2({
