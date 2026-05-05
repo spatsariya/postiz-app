@@ -5,12 +5,26 @@ import {
 } from '@gitroom/backend/services/auth/providers.interface';
 
 const defaultRedirect = () =>
-  `${process.env.FRONTEND_URL}/settings?provider=google`;
+  process.env.GOOGLE_REDIRECT_URI ||
+  `${process.env.FRONTEND_URL}/integrations/social/youtube`;
+
+const getGoogleCredentials = () => {
+  const clientId = process.env.GOOGLE_CLIENT_ID || process.env.YOUTUBE_CLIENT_ID;
+  const clientSecret =
+    process.env.GOOGLE_CLIENT_SECRET || process.env.YOUTUBE_CLIENT_SECRET;
+
+  if (!clientId || !clientSecret) {
+    throw new Error(
+      'Google OAuth is not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET (or YOUTUBE_CLIENT_ID and YOUTUBE_CLIENT_SECRET).'
+    );
+  }
+
+  return { clientId, clientSecret };
+};
 
 const makeClient = (redirectUri: string) =>
   new google.auth.OAuth2({
-    clientId: process.env.YOUTUBE_CLIENT_ID,
-    clientSecret: process.env.YOUTUBE_CLIENT_SECRET,
+    ...getGoogleCredentials(),
     redirectUri,
   });
 
